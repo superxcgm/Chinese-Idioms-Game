@@ -39,4 +39,10 @@ public class UserTest {
         user.setProcess(Math.abs(random.nextInt()) % 10);
         Assert.assertTrue(user.save());
     }
+
+    @Test
+    public void anonymousUserTest() {
+        User anonymousUser = User.createAnonymousUser();
+        Assert.assertEquals("anonymous", anonymousUser.getUsername());
+    }
 }

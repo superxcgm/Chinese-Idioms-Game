@@ -131,4 +131,8 @@ public class User {
         DB.close(connection);
         return completeUser;
     }
+
+    public static User createAnonymousUser() {
+        return AnonymousUser.getAnonymousUser();
+    }
 }
