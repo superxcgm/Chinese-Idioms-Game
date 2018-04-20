@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfigure {
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         try {
