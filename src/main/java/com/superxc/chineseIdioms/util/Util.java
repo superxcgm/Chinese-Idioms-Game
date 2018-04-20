@@ -1,9 +1,7 @@
 package com.superxc.chineseIdioms.util;
 
-import javax.swing.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.DriverManager;
 
 public class Util {
     /**
