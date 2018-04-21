@@ -1,5 +1,6 @@
 package com.superxc.chineseIdioms.util;
 
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,5 +33,28 @@ public class Util {
             e.printStackTrace();
         }
         return re_md5;
+    }
+
+    public static String fileReadToString(String fileName) {
+        String encoding = "UTF-8";
+        File file = new File(fileName);
+        Long filelength = file.length();
+        byte[] filecontent = new byte[filelength.intValue()];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new String(filecontent, encoding);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("The OS does not support " + encoding);
+            e.printStackTrace();
+            return null;
+        }
     }
 }
