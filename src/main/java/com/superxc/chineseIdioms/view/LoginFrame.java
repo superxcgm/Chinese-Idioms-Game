@@ -51,21 +51,19 @@ public class LoginFrame extends JFrame{
                 labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
             }
         });
-        // TODO: 鼠标放上去的时候，加一条下划线，然后鼠标变成手
         northPanel.add(labelRegister);
     }
 
     private void initializeCenterComponent(JPanel centerPanel) {
-        // TODO: 改用网格组布局
-        centerPanel.setLayout(new GridLayout(2, 2));
+        centerPanel.setLayout(new GridBagLayout());
 
-        centerPanel.add(new JLabel("用户名：", SwingConstants.RIGHT));
+        centerPanel.add(new JLabel("用户名：", SwingConstants.RIGHT), new GBC(0, 0, 1, 1).setAnchor(GBC.EAST).setInsets(0, 5, 0, 0));
         JTextField textFieldUsername = new JTextField();
-        centerPanel.add(textFieldUsername);
+        centerPanel.add(textFieldUsername, new GBC(1, 0, 2, 1).setFill(GBC.HORIZONTAL).setWeight(100, 0));
 
-        centerPanel.add(new JLabel("密码：", SwingConstants.RIGHT));
+        centerPanel.add(new JLabel("密码：", SwingConstants.RIGHT), new GBC(0, 1, 1, 1).setAnchor(GBC.EAST));
         JPasswordField passwordField = new JPasswordField();
-        centerPanel.add(passwordField);
+        centerPanel.add(passwordField, new GBC(1, 1, 2, 1).setFill(GBC.HORIZONTAL).setWeight(100, 0));
     }
 
     private void initializeSouthComponent(JPanel southPanel) {
