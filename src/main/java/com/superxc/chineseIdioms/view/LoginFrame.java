@@ -42,9 +42,7 @@ public class LoginFrame extends CenterableFrame{
         // 和窗口背景色溶为一体的底边框
         labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
 
-        labelRegister.addMouseListener(new MouseAdapter() {
-
-        });
+        labelRegister.addMouseListener(new LabelRegisterListener(this, labelRegister));
         northPanel.add(labelRegister);
     }
 
@@ -99,14 +97,14 @@ public class LoginFrame extends CenterableFrame{
         frame.setVisible(true);
     }
 
-    private class labelRegisterListener extends MouseAdapter{
+    private class LabelRegisterListener extends MouseAdapter{
 
         private JLabel labelRegister;
         private JFrame loginFrame;
         private RegisterFrame registerFrame = null;
 
 
-        public labelRegisterListener(JFrame loginFrame, JLabel labelRegister) {
+        public LabelRegisterListener(JFrame loginFrame, JLabel labelRegister) {
             this.loginFrame = loginFrame;
             this.labelRegister = labelRegister;
         }
@@ -127,6 +125,7 @@ public class LoginFrame extends CenterableFrame{
                 registerFrame = new RegisterFrame(loginFrame);
             }
             loginFrame.setVisible(false);
+            // TODO: 这里会出现文本框还没完整清除，就显示出来，所以用户会看到一闪而过的清除过程
             registerFrame.clearAllTextField();
             registerFrame.setVisible(true);
         }
