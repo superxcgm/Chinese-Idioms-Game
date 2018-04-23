@@ -112,6 +112,9 @@ public class User {
      * @return return completeUser if login success, or return null if login failure.
      */
     public static User login(User incompleteUser) {
+        if (incompleteUser == createAnonymousUser()) {
+            return incompleteUser;
+        }
         Connection connection = DB.getConnect();
         User completeUser = null;
         try {
