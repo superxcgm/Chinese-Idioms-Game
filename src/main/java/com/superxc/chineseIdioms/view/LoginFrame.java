@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LoginFrame extends JFrame{
+public class LoginFrame extends CenterableFrame{
 
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
@@ -34,10 +34,6 @@ public class LoginFrame extends JFrame{
 
         moveToScreenCenter();
         setResizable(false);
-    }
-
-    private void moveToScreenCenter() {
-        setLocationRelativeTo(null);
     }
 
     private void initializeNorthComponent(JPanel northPanel) {
