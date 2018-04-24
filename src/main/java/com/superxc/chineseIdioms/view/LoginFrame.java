@@ -93,7 +93,7 @@ public class LoginFrame extends CenterableFrame{
             return;
         }
         this.setVisible(false);
-        JFrame frame = new ChoseStageFrame(incompleteUser);
+        JFrame frame = new ChoseStageFrame(completeUser);
         frame.setVisible(true);
     }
 

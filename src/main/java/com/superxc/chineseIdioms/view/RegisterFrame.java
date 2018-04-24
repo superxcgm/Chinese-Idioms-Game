@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.stream.Stream;
 
 public class RegisterFrame extends CenterableFrame {
     private JFrame loginFrame;
