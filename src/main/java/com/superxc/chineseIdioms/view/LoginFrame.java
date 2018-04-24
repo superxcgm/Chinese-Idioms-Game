@@ -51,7 +51,7 @@ public class LoginFrame extends CenterableFrame{
     }
 
     private String getInputPassword() {
-        return new String(passwordField.getPassword()).trim();
+        return new String(passwordField.getPassword());
     }
 
     private void initializeCenterComponent(JPanel centerPanel) {
