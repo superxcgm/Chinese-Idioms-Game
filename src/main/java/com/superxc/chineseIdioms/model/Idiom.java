@@ -50,8 +50,8 @@ public class Idiom {
         return description;
     }
 
-    public char[] getSplit() {
-        return null;
+    public String[] getSplit() {
+        return value.split("");
     }
 
     /**

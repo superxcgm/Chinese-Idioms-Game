@@ -15,6 +15,7 @@ public class ChoseStageFrame extends CenterableFrame {
     private User user;
 
     public ChoseStageFrame(User user) {
+        // TODO: 选关页面出现之前，应该先显示一个玩法介绍
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.user = user;
 
@@ -29,10 +30,7 @@ public class ChoseStageFrame extends CenterableFrame {
     }
 
     private void initializeCenterPanel(JPanel centerPanel) {
-        int rows = MAX_STAGE / COLS;
-        if (MAX_STAGE % COLS != 0) {
-            rows++;
-        }
+        int rows = getRows();
         centerPanel.setLayout(new GridLayout(rows, COLS));
         for (int i = 1; i <= MAX_STAGE; i++) {
             JButton button = new JButton(i + "");
@@ -42,6 +40,14 @@ public class ChoseStageFrame extends CenterableFrame {
             }
             centerPanel.add(button);
         }
+    }
+
+    private int getRows() {
+        int rows = MAX_STAGE / COLS;
+        if (MAX_STAGE % COLS != 0) {
+            rows++;
+        }
+        return rows;
     }
 
     private ActionListener choseStageListener() {
