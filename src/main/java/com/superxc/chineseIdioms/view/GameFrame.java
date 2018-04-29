@@ -9,16 +9,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GameFrame extends CenterableFrame{
 
-    public static final String PROMPT_OFF = "提示：关";
-    public static final int COLS = 7;
+    private static final String PROMPT_OFF = "提示：关";
+    private static final int COLS = 7;
     private final JPanel centerPanel;
     private final JPanel southPanel;
-    private final List<Idiom> idioms;
+    private Map<Integer, Idiom> idioms;
     private boolean prompt = false;
     private int currentPromptIndex = -1;
 
@@ -36,7 +35,7 @@ public class GameFrame extends CenterableFrame{
         centerPanel = new JPanel();
         southPanel = new JPanel();
 
-        idioms = Idiom.getIdioms(stage);
+        initIdioms(stage);
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
@@ -47,6 +46,14 @@ public class GameFrame extends CenterableFrame{
         pack();
         moveToScreenCenter();
         setResizable(false);
+    }
+
+    private void initIdioms(int stage) {
+        idioms = new HashMap<>();
+        int index = 0;
+        for (Idiom idiom : Idiom.getIdioms(stage)) {
+            idioms.put(index++, idiom);
+        }
     }
 
     private void initializeSouthPanel(JPanel southPanel) {
@@ -90,7 +97,7 @@ public class GameFrame extends CenterableFrame{
     private void initializeCenterPanel(JPanel centerPanel) {
         int rows = getRows();
         centerPanel.setLayout(new GridLayout(rows, COLS));
-        for (Idiom idiom : idioms) {
+        for (Idiom idiom : idioms.values()) {
             String[] words = idiom.getSplit();
             for (String word : words) {
                 JButton button = new JButton(word);
