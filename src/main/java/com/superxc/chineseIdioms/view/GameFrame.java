@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.Random;
 
@@ -22,11 +24,19 @@ public class GameFrame extends CenterableFrame{
 
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                choseStageFrame.setVisible(true);
+            }
+        });
+
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
         centerPanel = new JPanel();
         southPanel = new JPanel();
 
         idioms = Idiom.getIdioms(stage);
-        System.out.println("stage: " + stage);
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
