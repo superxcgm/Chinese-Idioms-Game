@@ -159,6 +159,10 @@ public class GameFrame extends CenterableFrame{
                 // TODO: 播放成功消除的音效
 
                 if (idioms.size() == 0) {
+                    if (user.getProcess() < stage) {
+                        user.setProcess(stage);
+                        user.save();
+                    }
                     Object stringArray[] = {"主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {

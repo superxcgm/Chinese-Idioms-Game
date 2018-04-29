@@ -5,13 +5,16 @@ import com.superxc.chineseIdioms.model.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChoseStageFrame extends CenterableFrame {
 
     // TODO: MAX_STAGE 应该从数据库获取
     private static final int MAX_STAGE = 20;
-    public static final int COLS = 5;
-    private JPanel centerPanel;
+    private static final int COLS = 5;
+
+    private List<JButton> btns = new ArrayList<>();
     private User user;
 
     public ChoseStageFrame(User user) {
@@ -20,7 +23,7 @@ public class ChoseStageFrame extends CenterableFrame {
         this.user = user;
 
         setTitle("选择关卡");
-        centerPanel = new JPanel();
+        JPanel centerPanel = new JPanel();
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
@@ -35,11 +38,10 @@ public class ChoseStageFrame extends CenterableFrame {
         for (int i = 1; i <= MAX_STAGE; i++) {
             JButton button = new JButton(i + "");
             button.addActionListener(choseStageListener());
-            if (i > user.getProcess() + 1) {
-                button.setEnabled(false);
-            }
             centerPanel.add(button);
+            btns.add(button);
         }
+        updateStageStatus();
     }
 
     private int getRows() {
@@ -56,5 +58,14 @@ public class ChoseStageFrame extends CenterableFrame {
             setVisible(false);
             gameFrame.setVisible(true);
         };
+    }
+
+    public void updateStageStatus() {
+        // TODO: 所以调用显示这个窗口的，也都应该调用这个函数
+        btns.forEach(btn -> {
+            if (Integer.parseInt(btn.getActionCommand()) > user.getProcess() + 1) {
+                btn.setEnabled(false);
+            }
+        });
     }
 }
