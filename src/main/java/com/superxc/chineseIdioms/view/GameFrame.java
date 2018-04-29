@@ -102,20 +102,24 @@ public class GameFrame extends CenterableFrame{
         int rows = getRows();
         centerPanel.setLayout(new GridLayout(rows, COLS));
         int index = 0;
+        List<JButton> btns = new ArrayList<>(idioms.size() * 4);
         for (Idiom idiom : idioms.values()) {
             String[] words = idiom.getSplit();
             for (String word : words) {
                 JButton button = new JButton(word);
                 index++;
                 button.addActionListener(handleWordClick());
-                centerPanel.add(button);
+                btns.add(button);
             }
         }
+        Collections.shuffle(btns);
+        btns.forEach(centerPanel::add);
     }
 
     private ActionListener handleWordClick() {
         return e -> {
             JButton button = (JButton) e.getSource();
+
             if (wordsClick.contains(button)) {
                 setButtonActive(button, false);
                 wordsClick.remove(button);
@@ -136,6 +140,9 @@ public class GameFrame extends CenterableFrame{
                 }
                 wordsClick.forEach(btn -> btn.setVisible(false));
                 idioms.remove(index);
+                // TODO: 播放成功消除的音效
+            } else {
+                // TODO: 播放消除失败的音效
             }
             wordsClick.forEach(btn -> {
                 setButtonActive(btn, false);
