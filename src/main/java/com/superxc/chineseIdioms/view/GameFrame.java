@@ -23,9 +23,22 @@ public class GameFrame extends CenterableFrame{
     private int currentPromptIndex = -1;
 
     private List<JButton> wordsClick = new ArrayList<>();
+
     private JLabel labelPrompt;
 
+    private ChoseStageFrame choseStageFrame;
+
+    private User user;
+
+    private int stage;
+
+    private int timeUsed;
+    private boolean SHUFFLE_ON = false;
+
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
+        this.choseStageFrame = choseStageFrame;
+        this.user = user;
+        this.stage = stage;
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -34,6 +47,7 @@ public class GameFrame extends CenterableFrame{
             }
         });
 
+        setTitle("第" + stage + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         JPanel centerPanel = new JPanel();
@@ -112,7 +126,9 @@ public class GameFrame extends CenterableFrame{
                 btns.add(button);
             }
         }
-        Collections.shuffle(btns);
+        if (SHUFFLE_ON) {
+            Collections.shuffle(btns);
+        }
         btns.forEach(centerPanel::add);
     }
 
@@ -141,6 +157,19 @@ public class GameFrame extends CenterableFrame{
                 wordsClick.forEach(btn -> btn.setVisible(false));
                 idioms.remove(index);
                 // TODO: 播放成功消除的音效
+
+                if (idioms.size() == 0) {
+                    Object stringArray[] = {"主页", "下一关"};
+                    int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
+                    if (option == JOptionPane.YES_OPTION) {
+                        choseStageFrame.setVisible(true);
+                        setVisible(false);
+                    } else {
+                        JFrame frame = new GameFrame(choseStageFrame, user, stage + 1);
+                        frame.setVisible(true);
+                        setVisible(false);
+                    }
+                }
             } else {
                 // TODO: 播放消除失败的音效
             }
