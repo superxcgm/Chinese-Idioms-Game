@@ -9,12 +9,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 public class GameFrame extends CenterableFrame{
 
     private static final String PROMPT_OFF = "提示：关";
     private static final int COLS = 7;
+    private JLabel labelTimer;
 
     private Map<Integer, Idiom> idioms;
 
@@ -32,8 +34,9 @@ public class GameFrame extends CenterableFrame{
 
     private int stage;
 
-    private int timeUsed;
+    private int timeUsed = 0;
     private boolean SHUFFLE_ON = false;
+    private Timer timer;
 
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
         this.choseStageFrame = choseStageFrame;
@@ -50,10 +53,14 @@ public class GameFrame extends CenterableFrame{
         setTitle("第" + stage + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
+        initIdioms(stage);
+
+        JPanel northPanel = new JPanel();
         JPanel centerPanel = new JPanel();
         JPanel southPanel = new JPanel();
 
-        initIdioms(stage);
+        initializeNorthPanel(northPanel);
+        add(northPanel, BorderLayout.NORTH);
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
@@ -64,6 +71,28 @@ public class GameFrame extends CenterableFrame{
         pack();
         moveToScreenCenter();
         setResizable(false);
+
+        initTimer();
+    }
+
+    private void initializeNorthPanel(JPanel northPanel) {
+        labelTimer = new JLabel();
+        refreshLabelTimer();
+        northPanel.add(labelTimer);
+    }
+
+    private void refreshLabelTimer() {
+        labelTimer.setText("计时：" + timeUsed);
+    }
+    private void initTimer() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeUsed++;
+                refreshLabelTimer();
+            }
+        }, 0, 1000);
     }
 
     private void initIdioms(int stage) {
@@ -163,6 +192,7 @@ public class GameFrame extends CenterableFrame{
                         user.setProcess(stage);
                         user.save();
                     }
+                    timer.cancel();
                     Object stringArray[] = {"主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
