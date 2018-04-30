@@ -43,7 +43,7 @@ public class GameFrame extends CenterableFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                choseStageFrame.setVisible(true);
+                choseStageFrame.showFrame();
             }
         });
 
@@ -166,7 +166,7 @@ public class GameFrame extends CenterableFrame{
                     Object stringArray[] = {"主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
-                        choseStageFrame.setVisible(true);
+                        choseStageFrame.showFrame();
                         setVisible(false);
                     } else {
                         JFrame frame = new GameFrame(choseStageFrame, user, stage + 1);

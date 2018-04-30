@@ -60,9 +60,14 @@ public class ChoseStageFrame extends CenterableFrame {
         };
     }
 
-    public void updateStageStatus() {
-        // TODO: 所以调用显示这个窗口的，也都应该调用这个函数
+    public void showFrame() {
+        setVisible(true);
+        updateStageStatus();
+    }
+
+    private void updateStageStatus() {
         btns.forEach(btn -> {
+            btn.setEnabled(true);
             if (Integer.parseInt(btn.getActionCommand()) > user.getProcess() + 1) {
                 btn.setEnabled(false);
             }
