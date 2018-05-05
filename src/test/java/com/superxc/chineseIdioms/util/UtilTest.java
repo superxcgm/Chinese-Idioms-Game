@@ -18,7 +18,7 @@ public class UtilTest {
     @Test
     public void fileReadToStringTest() throws Exception{
 
-        String filename = "test_file.xc";
+        String filename = this.getClass().getResource("/test_file.xc").getFile();
         File file = new File(filename);
         PrintStream printStream = new PrintStream(new FileOutputStream(file));
 
