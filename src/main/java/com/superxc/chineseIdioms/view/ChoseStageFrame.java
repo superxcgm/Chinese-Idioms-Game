@@ -11,7 +11,7 @@ import java.util.List;
 public class ChoseStageFrame extends CenterableFrame {
 
     // TODO: MAX_STAGE 应该从数据库获取
-    private static final int MAX_STAGE = 20;
+    private static final int MAX_STAGE = 30;
     private static final int COLS = 5;
 
     private List<JButton> btns = new ArrayList<>();
