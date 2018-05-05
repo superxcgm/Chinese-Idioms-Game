@@ -15,7 +15,10 @@ public class ChoseStageFrame extends CenterableFrame {
     private static final int COLS = 5;
 
     private List<JButton> btns = new ArrayList<>();
+
     private User user;
+
+    private RankListFrame rankListFrame = null;
 
     public ChoseStageFrame(User user) {
         // TODO: 选关页面出现之前，应该先显示一个玩法介绍
@@ -24,12 +27,27 @@ public class ChoseStageFrame extends CenterableFrame {
 
         setTitle("选择关卡");
         JPanel centerPanel = new JPanel();
+        JPanel southPanel = new JPanel();
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
 
+        initializeSouthPanel(southPanel);
+        add(southPanel, BorderLayout.SOUTH);
+
         pack();
         moveToScreenCenter();
+    }
+
+    private void initializeSouthPanel(JPanel southPanel) {
+        JButton buttonRankList = new JButton("排行榜");
+        buttonRankList.addActionListener(e -> {
+            if (rankListFrame == null) {
+                rankListFrame = new RankListFrame(this);
+            }
+            rankListFrame.showFrame();
+        });
+        southPanel.add(buttonRankList);
     }
 
     private void initializeCenterPanel(JPanel centerPanel) {

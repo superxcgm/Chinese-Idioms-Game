@@ -45,4 +45,12 @@ public class UserTest {
         User anonymousUser = User.createAnonymousUser();
         Assert.assertEquals("anonymous", anonymousUser.getUsername());
     }
+
+    @Test
+    public void should_return_user_list_order_by_process() {
+        for (User user : User.getTopNOrderByProcessDesc(5)) {
+            System.out.println(user);
+        }
+
+    }
 }

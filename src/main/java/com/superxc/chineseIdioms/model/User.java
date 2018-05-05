@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -137,5 +139,41 @@ public class User {
 
     public static User createAnonymousUser() {
         return AnonymousUser.getAnonymousUser();
+    }
+
+    public static List<User> getTopNOrderByProcessDesc(int n) {
+        List<User> userList = new ArrayList<>();
+
+        Connection connection = DB.getConnect();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = String.format("SELECT username, process FROM %s ORDER BY process DESC LIMIT %d",
+                    tableName, n);
+
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int process = resultSet.getInt("process");
+
+                User user = new User(username, null);
+                user.setProcess(process);
+
+                userList.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", process=" + process +
+                '}';
     }
 }
