@@ -1,8 +1,8 @@
 package com.superxc.chineseIdioms.view;
 
-import com.sun.tools.javac.util.Pair;
 import com.superxc.chineseIdioms.model.Idiom;
 import com.superxc.chineseIdioms.model.User;
+import com.superxc.chineseIdioms.util.AppConfigure;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,13 +35,16 @@ public class GameFrame extends CenterableFrame{
     private int stage;
 
     private int timeUsed = 0;
-    private boolean SHUFFLE_ON = false;
+    private final boolean SHUFFLE_ON;
     private Timer timer;
 
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
+
         this.choseStageFrame = choseStageFrame;
         this.user = user;
         this.stage = stage;
+
+        SHUFFLE_ON = AppConfigure.getBooleanProperty("GAME_SHUFFLE");
 
         addWindowListener(new WindowAdapter() {
             @Override

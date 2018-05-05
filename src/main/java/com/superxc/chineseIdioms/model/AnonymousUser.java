@@ -1,7 +1,5 @@
 package com.superxc.chineseIdioms.model;
 
-import com.superxc.chineseIdioms.exception.NotSaveableException;
-
 public class AnonymousUser extends User{
     private static final AnonymousUser user = new AnonymousUser();
 

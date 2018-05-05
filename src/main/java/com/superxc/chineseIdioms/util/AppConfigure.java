@@ -22,4 +22,8 @@ public class AppConfigure {
     public static String getProperty(String key) {
         return properties.getProperty(key);
     }
+
+    public static boolean getBooleanProperty(String key) {
+        return getProperty(key).equals("true");
+    }
 }
