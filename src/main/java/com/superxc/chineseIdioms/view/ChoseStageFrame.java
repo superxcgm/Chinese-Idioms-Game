@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChoseStageFrame extends CenterableFrame {
+public class ChoseStageFrame extends JFrame {
 
     // TODO: MAX_STAGE 应该从数据库获取
     private static final int MAX_STAGE = 30;
@@ -36,7 +36,7 @@ public class ChoseStageFrame extends CenterableFrame {
         add(southPanel, BorderLayout.SOUTH);
 
         pack();
-        moveToScreenCenter();
+        setLocationRelativeTo(null);
     }
 
     private void initializeSouthPanel(JPanel southPanel) {

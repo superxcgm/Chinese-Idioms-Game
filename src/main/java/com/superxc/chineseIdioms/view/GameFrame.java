@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
-public class GameFrame extends CenterableFrame{
+public class GameFrame extends JFrame {
 
     private static final String PROMPT_OFF = "提示：关";
     private static final int COLS = 7;
@@ -72,7 +72,7 @@ public class GameFrame extends CenterableFrame{
         add(southPanel, BorderLayout.SOUTH);
 
         pack();
-        moveToScreenCenter();
+        setLocationRelativeTo(null);
         setResizable(false);
 
         initTimer();

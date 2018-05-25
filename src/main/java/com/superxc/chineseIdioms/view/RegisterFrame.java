@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class RegisterFrame extends CenterableFrame {
+public class RegisterFrame extends JFrame {
     private JFrame loginFrame;
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
@@ -34,7 +34,7 @@ public class RegisterFrame extends CenterableFrame {
         add(southPanel, BorderLayout.SOUTH);
 
         pack();
-        moveToScreenCenter();
+        setLocationRelativeTo(null);
         setResizable(false);
     }
 

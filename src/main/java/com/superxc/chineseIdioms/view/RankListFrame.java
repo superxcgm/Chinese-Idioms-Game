@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class RankListFrame extends CenterableFrame{
+public class RankListFrame extends JFrame {
 
     private List<User> ranklist = null;
     private JLabel labelRankList;
@@ -19,7 +19,7 @@ public class RankListFrame extends CenterableFrame{
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
 
-        moveToScreenCenter();
+        setLocationRelativeTo(null);
     }
 
     private void initializeCenterPanel(JPanel centerPanel) {
