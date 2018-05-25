@@ -12,28 +12,42 @@ import java.util.List;
 import java.util.Objects;
 
 public class User {
-    static final String tableName = "user";
+    private static final String tableName = "user";
 
     private final String username;
     private final String password;
     private int process;
+    private String star;
+    private int totalStars;
 
 
     /**
-     * name must only contain upper/lowerCase letter, digits, '-' or '_'
-     * @param name
+     * username must only contain upper/lowerCase letter, digits, '-' or '_'
+     * @param username
      * @param password_raw
      */
-    public User(String name, String password_raw) {
-        username = name;
+    public User(String username, String password_raw, int process, String star, int totalStars) {
+        this.username = username;
         password = Util.MD5(password_raw);
-        process = 0;
+        this.process = process;
+        this.star = star;
+        this.totalStars = totalStars;
     }
 
     public User(User otherUser) {
         this.username = otherUser.username;
         this.password = otherUser.password;
         this.process = otherUser.process;
+        this.star = otherUser.star;
+        this.totalStars = otherUser.totalStars;
+    }
+
+    public String getStar() {
+        return star;
+    }
+
+    public int getTotalStars() {
+        return totalStars;
     }
 
     public String getUsername() {
@@ -79,8 +93,8 @@ public class User {
         Connection connection = DB.getConnect();
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("UPDATE %s SET process=%d WHERE username='%s'",
-                    tableName, getProcess(), getUsername());
+            String sql = String.format("UPDATE %s SET process=%d, star='%s', totalStars=%s WHERE username='%s'",
+                    tableName, getProcess(), getStar(), getTotalStars(), getUsername());
             success = statement.executeUpdate(sql) > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,8 +108,8 @@ public class User {
         Connection connection = DB.getConnect();
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("INSERT INTO %s (username, password, process) VALUES ('%s', '%s', %d)",
-                    tableName, getUsername(), getPassword(), getProcess());
+            String sql = String.format("INSERT INTO %s (username, password, process, star, totalStars) VALUES ('%s', '%s', %d, '%s', %d)",
+                    tableName, getUsername(), getPassword(), getProcess(), getStar(), getTotalStars());
              success = statement.executeUpdate(sql) > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -147,19 +161,13 @@ public class User {
         Connection connection = DB.getConnect();
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("SELECT username, process FROM %s ORDER BY process DESC LIMIT %d",
+            String sql = String.format("SELECT username, password, process, star, totalStars FROM %s ORDER BY process DESC LIMIT %d",
                     tableName, n);
 
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                String username = resultSet.getString("username");
-                int process = resultSet.getInt("process");
-
-                User user = new User(username, null);
-                user.setProcess(process);
-
-                userList.add(user);
+                userList.add(resultGet(resultSet));
             }
 
         } catch (SQLException e) {
@@ -168,12 +176,46 @@ public class User {
         return userList;
     }
 
+    public static List<User> getTopNOrderByTotalStartDesc(int n) {
+        List<User> userList = new ArrayList<>();
+
+        Connection connection = DB.getConnect();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = String.format("SELECT username, password, process, star, totalStars FROM %s ORDER BY totalStars DESC LIMIT %d",
+                    tableName, n);
+
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                userList.add(resultGet(resultSet));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    private static User resultGet(ResultSet resultSet) throws SQLException {
+        String username = resultSet.getString("username");
+        String password = resultSet.getString("password");
+        int process = resultSet.getInt("process");
+        String star = resultSet.getString("star");
+        int totalStars = resultSet.getInt("totalStars");
+
+        return new User(username, password, process, star, totalStars);
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", process=" + process +
+                ", star='" + star + '\'' +
+                ", totalStars=" + totalStars +
                 '}';
     }
 }

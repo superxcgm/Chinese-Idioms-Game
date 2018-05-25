@@ -68,7 +68,7 @@ public class GameFrame extends BackgroundImageJFrame {
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         timeTotal = 300 - (stage - 1) / 5 * 10;
-//        timeTotal = 10;
+//        timeTotal = 30;
 
         initIdioms(stage);
 
@@ -248,8 +248,22 @@ public class GameFrame extends BackgroundImageJFrame {
 
                     audioClipSuccess.play();
 
+
+                    int timeLeft = timeTotal - timeUsed;
+                    int star = 0;
+                    String starString = "";
+                    if (timeLeft > 60) {
+                        star = 3;
+                        starString = "✪✪✪";
+                    } else if (timeLeft > 30) {
+                        star = 2;
+                        starString = "✪✪";
+                    } else {
+                        star = 1;
+                        starString = "✪";
+                    }
                     Object stringArray[] = {"返回主页", "下一关"};
-                    int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
+                    int option = JOptionPane.showOptionDialog(this, starString + " 闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
                         choseStageFrame.showFrame();
                         setVisible(false);

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Idiom {
-    static final String tableName = "idiom";
+    private static final String tableName = "idiom";
     private int groupId;
     private String value;
     private String description;

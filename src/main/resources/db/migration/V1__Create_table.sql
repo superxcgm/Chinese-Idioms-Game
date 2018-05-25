@@ -8,5 +8,7 @@ CREATE TABLE `user` (
   `username` char(20) NOT NULL,
   `password` char(32) NOT NULL,
   `process` int(3) DEFAULT '0',
+  `star` varchar(30) NOT NULL COMMENT '30关，每一位代表一关的星数，0表示该关未通过',
+  `totalStars` int(11) NOT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

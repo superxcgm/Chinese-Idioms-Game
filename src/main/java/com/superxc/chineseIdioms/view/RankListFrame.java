@@ -47,7 +47,7 @@ public class RankListFrame extends BackgroundImageJFrame {
                 "<tr>\n" +
                 "<th>排名</th>\n" +
                 "<th>用户名</th>\n" +
-                "<th>关卡</th>\n" +
+                "<th>总星数</th>\n" +
                 "</tr>\n" +
                 "</thead>\n" +
                 "<tbody>");
@@ -56,12 +56,12 @@ public class RankListFrame extends BackgroundImageJFrame {
             User user;
 
             if (i >= ranklist.size()) {
-                user = new User("暂无", null);
+                user = new User("暂无", null, 0, "", 0);
             } else {
                 user = ranklist.get(i);
             }
 
-            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getProcess()));
+            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getTotalStars()));
         }
         stringBuilder.append("</tbody>\n" +
                 "</table>\n" +
