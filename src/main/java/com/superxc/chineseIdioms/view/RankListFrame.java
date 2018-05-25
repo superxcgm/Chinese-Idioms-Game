@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class RankListFrame extends JFrame {
+import static com.superxc.chineseIdioms.view.LoginFrame.BEACH_JPG;
+
+public class RankListFrame extends BackgroundImageJFrame {
 
     private List<User> ranklist = null;
     private JLabel labelRankList;
@@ -14,12 +16,13 @@ public class RankListFrame extends JFrame {
     public RankListFrame(ChoseStageFrame choseStageFrame) {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
-        JPanel centerPanel = new JPanel();
+        JPanel centerPanel = new TransparentJPanel();
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);
+        setBackground(BEACH_JPG);
     }
 
     private void initializeCenterPanel(JPanel centerPanel) {
@@ -65,6 +68,7 @@ public class RankListFrame extends JFrame {
                 "</body>\n" +
                 "</html>");
         labelRankList.setText(stringBuilder.toString());
+        labelRankList.setOpaque(false);
         pack();
     }
 }

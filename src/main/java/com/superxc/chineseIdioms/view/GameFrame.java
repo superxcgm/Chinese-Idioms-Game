@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
-public class GameFrame extends JFrame {
+import static com.superxc.chineseIdioms.view.LoginFrame.BEACH_JPG;
+
+public class GameFrame extends BackgroundImageJFrame {
 
     private static final String PROMPT_OFF = "提示：关";
     private static final int COLS = 7;
@@ -58,9 +60,9 @@ public class GameFrame extends JFrame {
 
         initIdioms(stage);
 
-        JPanel northPanel = new JPanel();
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
+        JPanel northPanel = new TransparentJPanel();
+        JPanel centerPanel = new TransparentJPanel();
+        JPanel southPanel = new TransparentJPanel();
 
         initializeNorthPanel(northPanel);
         add(northPanel, BorderLayout.NORTH);
@@ -74,6 +76,7 @@ public class GameFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
+        setBackground(BEACH_JPG);
 
         initTimer();
     }
@@ -141,6 +144,7 @@ public class GameFrame extends JFrame {
         } while (currentPromptIndex == promptIndex);
 
         currentPromptIndex = promptIndex;
+        // TODO: 潜在的空指针异常
         labelPrompt.setText(idioms.get(currentPromptIndex).getDescription());
     }
 

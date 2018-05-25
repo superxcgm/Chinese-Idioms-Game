@@ -8,8 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends BackgroundImageJFrame {
 
+    public static final String BEACH_JPG = "/beach.jpg";
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
 
@@ -17,9 +18,9 @@ public class LoginFrame extends JFrame {
         setTitle("用户登录");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel northPanel = new JPanel();
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
+        JPanel northPanel = new TransparentJPanel();
+        JPanel centerPanel = new TransparentJPanel();
+        JPanel southPanel = new TransparentJPanel();
 
         initializeNorthComponent(northPanel);
         add(northPanel, BorderLayout.NORTH);
@@ -32,28 +33,16 @@ public class LoginFrame extends JFrame {
 
         pack();
 
+        // move JFrame to center of the screen
         setLocationRelativeTo(null);
         setResizable(false);
-        setBackground();
-    }
-
-    private void setBackground() {
-        ((JPanel)this.getContentPane()).setOpaque(false);
-        String imgUrl = LoginFrame.class.getResource("/beach.jpg").getFile();
-        ImageIcon imageIcon = new ImageIcon(imgUrl);
-
-        JLabel background = new JLabel(imageIcon);
-        this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
-        background.setBounds(0, 0, getWidth(), getHeight());
+        setBackground(BEACH_JPG);
     }
 
     private void initializeNorthComponent(JPanel northPanel) {
-        northPanel.setOpaque(false);
 
         JLabel labelRegister = new JLabel("没有帐号？new一个");
         labelRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        // 和窗口背景色溶为一体的底边框
-//        labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
 
         labelRegister.addMouseListener(new LabelRegisterListener(this, labelRegister));
         northPanel.add(labelRegister);
@@ -68,7 +57,6 @@ public class LoginFrame extends JFrame {
     }
 
     private void initializeCenterComponent(JPanel centerPanel) {
-        centerPanel.setOpaque(false);
         centerPanel.setLayout(new GridBagLayout());
 
         centerPanel.add(new JLabel("用户名：", SwingConstants.RIGHT), new GBC(0, 0, 1, 1).setAnchor(GBC.EAST).setInsets(0, 5, 0, 0));
@@ -82,7 +70,6 @@ public class LoginFrame extends JFrame {
     }
 
     private void initializeSouthComponent(JPanel southPanel) {
-        southPanel.setOpaque(false);
         JButton buttonAnonymouseLogin = new JButton("匿名登录");
         buttonAnonymouseLogin.addActionListener(e -> login(User.createAnonymousUser()));
         southPanel.add(buttonAnonymouseLogin);
@@ -126,13 +113,11 @@ public class LoginFrame extends JFrame {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-//            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, Color.BLUE));
             labelRegister.setForeground(Color.PINK);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-//            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
             labelRegister.setForeground(Color.black);
         }
 

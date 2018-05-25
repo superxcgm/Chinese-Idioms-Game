@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChoseStageFrame extends JFrame {
+import static com.superxc.chineseIdioms.view.LoginFrame.BEACH_JPG;
+
+public class ChoseStageFrame extends BackgroundImageJFrame {
 
     // TODO: MAX_STAGE 应该从数据库获取
     private static final int MAX_STAGE = 30;
@@ -26,8 +28,8 @@ public class ChoseStageFrame extends JFrame {
         this.user = user;
 
         setTitle("选择关卡");
-        JPanel centerPanel = new JPanel();
-        JPanel southPanel = new JPanel();
+        JPanel centerPanel = new TransparentJPanel();
+        JPanel southPanel = new TransparentJPanel();
 
         initializeCenterPanel(centerPanel);
         add(centerPanel, BorderLayout.CENTER);
@@ -37,6 +39,7 @@ public class ChoseStageFrame extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
+        setBackground(BEACH_JPG);
     }
 
     private void initializeSouthPanel(JPanel southPanel) {
