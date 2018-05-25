@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -133,7 +132,7 @@ public class GameFrame extends BackgroundImageJFrame {
         labelPrompt.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                refreshPrompt();
+                refreshPrompt(true);
             }
         });
         southPanel.add(labelPrompt, BorderLayout.CENTER);
@@ -142,7 +141,7 @@ public class GameFrame extends BackgroundImageJFrame {
         buttonPrompt.addActionListener(e -> {
             prompt = !prompt;
             if (prompt) {
-                refreshPrompt();
+                refreshPrompt(false);
             } else {
                 labelPrompt.setText(PROMPT_OFF);
             }
@@ -150,18 +149,20 @@ public class GameFrame extends BackgroundImageJFrame {
         southPanel.add(buttonPrompt, BorderLayout.SOUTH);
     }
 
-    private void refreshPrompt() {
+    private void refreshPrompt(boolean differentCheck) {
         if (!prompt) {
             return;
         }
 
         int promptIndex;
         do {
-            promptIndex = (new Random()).nextInt(idioms.size());
-        } while (currentPromptIndex == promptIndex);
+            promptIndex = idioms.keySet()
+                    .stream()
+                    .mapToInt(i -> i).toArray()[new Random().nextInt(idioms.size())];
+        } while (differentCheck && currentPromptIndex == promptIndex);
 
         currentPromptIndex = promptIndex;
-        // TODO: 潜在的空指针异常
+
         labelPrompt.setText(idioms.get(currentPromptIndex).getDescription());
     }
 
@@ -204,11 +205,12 @@ public class GameFrame extends BackgroundImageJFrame {
             String sIdiom = String.join("", wordsClick.stream().map(btn -> btn.getActionCommand()).collect(Collectors.toList()));
             Integer index;
             if ((index = guessRight(sIdiom)) != null) {
-                if (idioms.get(index).getDescription().equals(labelPrompt.getText())) {
-                    refreshPrompt();
+                Idiom idiomRemoved = idioms.get(index);
+                idioms.remove(index);
+                if (idioms.size() != 0 && idiomRemoved.getDescription().equals(labelPrompt.getText())) {
+                    refreshPrompt(false);
                 }
                 wordsClick.forEach(btn -> btn.setVisible(false));
-                idioms.remove(index);
 
                 audioClipSuccessEliminate.play();
 
