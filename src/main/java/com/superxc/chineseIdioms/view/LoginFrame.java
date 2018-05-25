@@ -34,13 +34,26 @@ public class LoginFrame extends CenterableFrame{
 
         moveToScreenCenter();
         setResizable(false);
+        setBackground();
+    }
+
+    private void setBackground() {
+        ((JPanel)this.getContentPane()).setOpaque(false);
+        String imgUrl = LoginFrame.class.getResource("/beach.jpg").getFile();
+        ImageIcon imageIcon = new ImageIcon(imgUrl);
+
+        JLabel background = new JLabel(imageIcon);
+        this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
+        background.setBounds(0, 0, getWidth(), getHeight());
     }
 
     private void initializeNorthComponent(JPanel northPanel) {
+        northPanel.setOpaque(false);
+
         JLabel labelRegister = new JLabel("没有帐号？new一个");
         labelRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         // 和窗口背景色溶为一体的底边框
-        labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
+//        labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
 
         labelRegister.addMouseListener(new LabelRegisterListener(this, labelRegister));
         northPanel.add(labelRegister);
@@ -55,6 +68,7 @@ public class LoginFrame extends CenterableFrame{
     }
 
     private void initializeCenterComponent(JPanel centerPanel) {
+        centerPanel.setOpaque(false);
         centerPanel.setLayout(new GridBagLayout());
 
         centerPanel.add(new JLabel("用户名：", SwingConstants.RIGHT), new GBC(0, 0, 1, 1).setAnchor(GBC.EAST).setInsets(0, 5, 0, 0));
@@ -68,6 +82,7 @@ public class LoginFrame extends CenterableFrame{
     }
 
     private void initializeSouthComponent(JPanel southPanel) {
+        southPanel.setOpaque(false);
         JButton buttonAnonymouseLogin = new JButton("匿名登录");
         buttonAnonymouseLogin.addActionListener(e -> login(User.createAnonymousUser()));
         southPanel.add(buttonAnonymouseLogin);
@@ -111,12 +126,14 @@ public class LoginFrame extends CenterableFrame{
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, Color.BLUE));
+//            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, Color.BLUE));
+            labelRegister.setForeground(Color.PINK);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
+//            labelRegister.setBorder(BorderFactory.createMatteBorder(0, 0,1, 0, getBackground()));
+            labelRegister.setForeground(Color.black);
         }
 
         @Override
