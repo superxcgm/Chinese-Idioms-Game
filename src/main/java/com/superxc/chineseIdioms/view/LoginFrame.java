@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 public class LoginFrame extends BackgroundImageJFrame {
 
-    public static final String BEACH_JPG = "/beach.jpg";
+    public static final String BEACH_JPG = "/img/beach.jpg";
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
 

@@ -5,8 +5,10 @@ import com.superxc.chineseIdioms.model.User;
 import com.superxc.chineseIdioms.util.AppConfigure;
 
 import javax.swing.*;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -39,8 +41,13 @@ public class GameFrame extends BackgroundImageJFrame {
     private int timeUsed = 0;
     private final boolean SHUFFLE_ON;
     private Timer timer;
+    private AudioClip audioClipSuccessEliminate;
+    private AudioClip audioClipSuccess;
+    private AudioClip audioClipFailedEliminate;
 
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
+
+        loadResource();
 
         this.choseStageFrame = choseStageFrame;
         this.user = user;
@@ -79,6 +86,16 @@ public class GameFrame extends BackgroundImageJFrame {
         setBackground(BEACH_JPG);
 
         initTimer();
+    }
+
+    private void loadResource() {
+        audioClipSuccessEliminate = JApplet.newAudioClip(GameFrame.class.getResource("/sound/eliminateSuccess.wav"));
+
+        audioClipFailedEliminate = JApplet.newAudioClip(GameFrame.class.getResource("/sound/eliminateFail.wav"));
+
+        audioClipSuccess = JApplet.newAudioClip(GameFrame.class.getResource("/sound/success.wav"));
+
+
     }
 
     private void initializeNorthPanel(JPanel northPanel) {
@@ -192,7 +209,8 @@ public class GameFrame extends BackgroundImageJFrame {
                 }
                 wordsClick.forEach(btn -> btn.setVisible(false));
                 idioms.remove(index);
-                // TODO: 播放成功消除的音效
+
+                audioClipSuccessEliminate.play();
 
                 if (idioms.size() == 0) {
                     if (user.getProcess() < stage) {
@@ -200,6 +218,9 @@ public class GameFrame extends BackgroundImageJFrame {
                         user.save();
                     }
                     timer.cancel();
+
+                    audioClipSuccess.play();
+
                     Object stringArray[] = {"主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
@@ -212,7 +233,7 @@ public class GameFrame extends BackgroundImageJFrame {
                     }
                 }
             } else {
-                // TODO: 播放消除失败的音效
+                audioClipFailedEliminate.play();
             }
             wordsClick.forEach(btn -> {
                 setButtonActive(btn, false);
