@@ -57,7 +57,8 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
         int rows = getRows();
         centerPanel.setLayout(new GridLayout(rows, COLS));
         for (int i = 1; i <= MAX_STAGE; i++) {
-            JButton button = new JButton(i + "");
+            JButton button = new JButton("<html><center>" + i + "</center>" + user.getStageStarString(i) + "</html>");
+            button.setActionCommand(i + "");
             button.addActionListener(choseStageListener());
             centerPanel.add(button);
             btns.add(button);

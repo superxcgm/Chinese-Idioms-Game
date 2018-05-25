@@ -1,6 +1,7 @@
 package com.superxc.chineseIdioms.view;
 
 import com.superxc.chineseIdioms.model.User;
+import com.superxc.chineseIdioms.util.AppConfigure;
 
 import javax.swing.*;
 import java.awt.*;

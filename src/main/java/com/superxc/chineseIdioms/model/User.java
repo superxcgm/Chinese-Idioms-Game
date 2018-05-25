@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class User {
     private static final String tableName = "user";
+    private static final String STAR_ICON = "✪";
 
     private final String username;
     private final String password;
@@ -44,6 +45,28 @@ public class User {
 
     public String getStar() {
         return star;
+    }
+
+    public String getStageStarString(int stage) {
+        switch (getStageStarCount(stage)) {
+            case 0:
+                return "";
+            case 1:
+                return STAR_ICON;
+            case 2:
+                return STAR_ICON + STAR_ICON;
+            case 3:
+                return STAR_ICON + STAR_ICON + STAR_ICON;
+        }
+        return null;
+    }
+
+    public int getStageStarCount(int stage) {
+        stage--;
+        if (stage >= star.length()) {
+            return 0;
+        }
+        return Integer.parseInt(star.charAt(stage) + "");
     }
 
     public int getTotalStars() {
@@ -135,14 +158,14 @@ public class User {
         User completeUser = null;
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("SELECT username, password, process FROM %s WHERE username='%s' AND password='%s'",
+            // TODO: 这里需要预防SQL注入攻击
+            String sql = String.format("SELECT username, password, process, star, totalStars FROM %s WHERE username='%s' AND password='%s'",
                     tableName, incompleteUser.getUsername(), incompleteUser.getPassword());
 
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
-                completeUser = new User(incompleteUser);
-                completeUser.setProcess(resultSet.getInt("process"));
+                completeUser = resultGet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
