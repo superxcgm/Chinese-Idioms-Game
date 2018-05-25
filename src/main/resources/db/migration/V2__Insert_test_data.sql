@@ -1,4 +1,4 @@
-INSERT INTO `chineseIdioms`.`user`(`username`, `password`, `process`) VALUES ('superxc', 'a2854d99bb0d12cd0bae0e536a0084a2', 4);
+INSERT INTO `chineseIdioms`.`user`(`username`, `password`, `process`) VALUES ('superxc', 'a2854d99bb0d12cd0bae0e536a0084a2', 27);
 INSERT INTO `chineseIdioms`.`user`(`username`, `password`, `process`) VALUES ('yujialee', '9d7e5b85f7f4b0b650ac07726142cad9', 0);
 
 INSERT INTO `chineseIdioms`.`idiom`(`groupId`, `value`, `description`) VALUES (1, '风尘仆仆', '风尘：指行旅，含有辛苦之意；仆仆：行路劳累的样子。 形容旅途奔波，忙碌劳累。');

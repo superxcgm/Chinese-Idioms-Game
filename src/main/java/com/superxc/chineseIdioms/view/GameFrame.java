@@ -38,11 +38,14 @@ public class GameFrame extends BackgroundImageJFrame {
     private int stage;
 
     private int timeUsed = 0;
+    private int timeTotal;
+
     private final boolean SHUFFLE_ON;
     private Timer timer;
     private AudioClip audioClipSuccessEliminate;
     private AudioClip audioClipSuccess;
     private AudioClip audioClipFailedEliminate;
+    private AudioClip audioClipFailed;
 
     public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
 
@@ -63,6 +66,9 @@ public class GameFrame extends BackgroundImageJFrame {
 
         setTitle("第" + stage + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
+        timeTotal = 300 - (stage - 1) / 5 * 10;
+//        timeTotal = 10;
 
         initIdioms(stage);
 
@@ -94,6 +100,7 @@ public class GameFrame extends BackgroundImageJFrame {
 
         audioClipSuccess = JApplet.newAudioClip(GameFrame.class.getResource("/sound/success.wav"));
 
+        audioClipFailed = JApplet.newAudioClip(GameFrame.class.getResource("/sound/failed.wav"));
 
     }
 
@@ -104,7 +111,25 @@ public class GameFrame extends BackgroundImageJFrame {
     }
 
     private void refreshLabelTimer() {
-        labelTimer.setText("计时：" + timeUsed);
+
+        int timeLeft = timeTotal - timeUsed;
+        labelTimer.setText("时间剩余：" + timeLeft);
+        if (timeLeft <= 0) {
+            timer.cancel();
+            labelTimer.setText("时间剩余：0");
+            audioClipFailed.play();
+
+            Object stringArray[] = {"再试一次", "返回主页"};
+            int option = JOptionPane.showOptionDialog(this, "闯关失败！没有在限定的时间内完成。", "失败！", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, stringArray, stringArray[1]);
+            if (option == JOptionPane.YES_OPTION) {
+                JFrame frame = new GameFrame(choseStageFrame, user, stage);
+                frame.setVisible(true);
+                setVisible(false);
+            } else {
+                choseStageFrame.showFrame();
+                setVisible(false);
+            }
+        }
     }
     private void initTimer() {
         timer = new Timer();
@@ -223,7 +248,7 @@ public class GameFrame extends BackgroundImageJFrame {
 
                     audioClipSuccess.play();
 
-                    Object stringArray[] = {"主页", "下一关"};
+                    Object stringArray[] = {"返回主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, "闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
                         choseStageFrame.showFrame();
