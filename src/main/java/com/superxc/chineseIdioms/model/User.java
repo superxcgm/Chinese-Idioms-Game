@@ -29,7 +29,7 @@ public class User {
      */
     public User(String username, String password_raw, int process, String star, int totalStars) {
         this.username = username;
-        password = Util.MD5(password_raw);
+        this.password = password_raw;
         this.process = process;
         this.star = star;
         this.totalStars = totalStars;
@@ -59,6 +59,17 @@ public class User {
                 return STAR_ICON + STAR_ICON + STAR_ICON;
         }
         return null;
+    }
+
+    public void setStageStar(int stage, int starCount) {
+        stage--;
+        if (stage == star.length()) {
+            star += starCount;
+            totalStars += starCount;
+        } else {
+            totalStars = totalStars - Integer.parseInt(star.charAt(stage) + "") + starCount;
+            star = star.substring(0, stage) + starCount + star.substring(stage + 1);
+        }
     }
 
     public int getStageStarCount(int stage) {
@@ -161,7 +172,7 @@ public class User {
             // TODO: 这里需要预防SQL注入攻击
             String sql = String.format("SELECT username, password, process, star, totalStars FROM %s WHERE username='%s' AND password='%s'",
                     tableName, incompleteUser.getUsername(), incompleteUser.getPassword());
-
+            System.out.println(sql);
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {

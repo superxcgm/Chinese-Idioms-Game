@@ -2,6 +2,7 @@ package com.superxc.chineseIdioms.view;
 
 import com.superxc.chineseIdioms.model.User;
 import com.superxc.chineseIdioms.util.AppConfigure;
+import com.superxc.chineseIdioms.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,7 +86,7 @@ public class LoginFrame extends BackgroundImageJFrame {
     }
 
     private ActionListener loginWithUsernameAndPassword() {
-        return e -> login(new User(getInputUsername(), getInputPassword(), 0, "", 0));
+        return e -> login(new User(getInputUsername(), Util.MD5(getInputPassword()), 0, "", 0));
     }
 
     private void login(User incompleteUser) {

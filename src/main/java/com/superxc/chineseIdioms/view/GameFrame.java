@@ -251,19 +251,23 @@ public class GameFrame extends BackgroundImageJFrame {
 
 
                     int timeLeft = timeTotal - timeUsed;
-                    int star = 0;
+                    int starCount = 0;
                     String starString = "";
                     if (timeLeft > 60) {
-                        star = 3;
+                        starCount = 3;
                         starString = STAR_ICON + STAR_ICON + STAR_ICON;
                     } else if (timeLeft > 30) {
-                        star = 2;
+                        starCount = 2;
                         starString = STAR_ICON + STAR_ICON;
                     } else {
-                        star = 1;
+                        starCount = 1;
                         starString = STAR_ICON;
                     }
-                    // TODO: 更新星数
+
+                    if (user.getStageStarCount(stage) < starCount) {
+                        user.setStageStar(stage, starCount);
+                        user.save();
+                    }
                     Object stringArray[] = {"返回主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, starString + " 闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
