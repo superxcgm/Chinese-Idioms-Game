@@ -172,7 +172,7 @@ public class User {
             // TODO: 这里需要预防SQL注入攻击
             String sql = String.format("SELECT username, password, process, star, totalStars FROM %s WHERE username='%s' AND password='%s'",
                     tableName, incompleteUser.getUsername(), incompleteUser.getPassword());
-            System.out.println(sql);
+
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
