@@ -90,6 +90,8 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
     private void updateStageStatus() {
         btns.forEach(btn -> {
             btn.setEnabled(true);
+            int index = Integer.parseInt(btn.getActionCommand());
+            btn.setText("<html><center>" + index + "</center>" + user.getStageStarString(index) + "</html>");
             if (Integer.parseInt(btn.getActionCommand()) > user.getProcess() + 1) {
                 btn.setEnabled(false);
             }
