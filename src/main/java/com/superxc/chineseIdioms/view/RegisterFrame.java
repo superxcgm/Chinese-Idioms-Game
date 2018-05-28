@@ -91,7 +91,11 @@ public class RegisterFrame extends BackgroundImageJFrame {
                     errorMsg = "两次输入的密码不一致!";
                     throwAnException();
                 }
-                user = new User(username, Util.MD5(password), 0, "", 0);
+                user = new User(username, Util.MD5(password));
+                if (user.exist()) {
+                    errorMsg = "用户名已经存在！";
+                    throwAnException();
+                }
                 if (!user.save()) {
                     errorMsg = "注册失败！";
                     throwAnException();

@@ -4,7 +4,7 @@ public class AnonymousUser extends User{
     private static final AnonymousUser user = new AnonymousUser();
 
     private AnonymousUser() {
-        super("anonymous", null, 0, "", 0);
+        super("anonymous", null);
     }
 
     @Override

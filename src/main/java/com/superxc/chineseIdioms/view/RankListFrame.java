@@ -56,12 +56,12 @@ public class RankListFrame extends BackgroundImageJFrame {
             User user;
 
             if (i >= ranklist.size()) {
-                user = new User("暂无", null, 0, "", 0);
+                user = new User("暂无", null);
             } else {
                 user = ranklist.get(i);
             }
 
-            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getTotalStars()));
+//            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getTotalStars()));
         }
         stringBuilder.append("</tbody>\n" +
                 "</table>\n" +

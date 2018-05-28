@@ -242,10 +242,10 @@ public class GameFrame extends BackgroundImageJFrame {
                 audioClipSuccessEliminate.play();
 
                 if (idioms.size() == 0) {
-                    if (user.getProcess() < stage) {
-                        user.setProcess(stage);
-                        user.save();
-                    }
+//                    if (user.getProcess() < stage) {
+//                        user.setProcess(stage);
+//                        user.save();
+//                    }
                     timer.cancel();
 
                     audioClipSuccess.play();
