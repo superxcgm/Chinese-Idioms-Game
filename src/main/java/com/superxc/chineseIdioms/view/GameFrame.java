@@ -69,8 +69,8 @@ public class GameFrame extends BackgroundImageJFrame {
         setTitle("第" + stage + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-//        timeTotal = 300 - (stage - 1) / 5 * 10;
-        timeTotal = 10;
+        timeTotal = 300 - (stage - 1) / 5 * 10;
+//        timeTotal = 10;
 
         initIdioms(stage);
 
@@ -265,10 +265,10 @@ public class GameFrame extends BackgroundImageJFrame {
                         starString = STAR_ICON;
                     }
 
-                    if (user.getStageStarCount(stage) < starCount) {
-                        user.setStageStar(stage, starCount);
-                        user.save();
-                    }
+//                    if (user.getStageStarCount(stage) < starCount) {
+//                        user.setStageStar(stage, starCount);
+//                        user.save();
+//                    }
                     Object stringArray[] = {"返回主页", "下一关"};
                     int option = JOptionPane.showOptionDialog(this, starString + " 闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {

@@ -12,27 +12,27 @@ import java.util.List;
 
 public class Idiom {
     private static final String tableName = "idiom";
-    private int groupId;
+    private int stageId;
     private String value;
     private String description;
 
-    private Idiom(int groupId, String value, String description) {
-        this.groupId = groupId;
+    private Idiom(int stageId, String value, String description) {
+        this.stageId = stageId;
         this.value = value;
         this.description = description;
     }
 
-    public static List<Idiom> getIdioms(int givenGroupId) {
+    public static List<Idiom> getIdioms(int givenStageId) {
         List<Idiom> idioms = new ArrayList<>();
         Connection connection = DB.getConnect();
 
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("SELECT `value`,`description` FROM %s WHERE `groupId`=%d",
-                    tableName, givenGroupId);
+            String sql = String.format("SELECT `value`,`description` FROM %s WHERE `stageId`=%d",
+                    tableName, givenStageId);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                idioms.add(new Idiom(givenGroupId, resultSet.getString("value"), resultSet.getString("description")));
+                idioms.add(new Idiom(givenStageId, resultSet.getString("value"), resultSet.getString("description")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class Idiom {
                 unresolveLines.add(i + 1);
                 continue;
             }
-            String sql = String.format("INSERT INTO %s(`groupId`, `value`, `description`) VALUES (%d, '%s', '%s')",
+            String sql = String.format("INSERT INTO %s(`stageId`, `value`, `description`) VALUES (%d, '%s', '%s')",
                     tableName, Integer.parseInt(elems[0]), elems[1], elems[2]);
             if (statement.executeUpdate(sql) > 0) {
                 continue;

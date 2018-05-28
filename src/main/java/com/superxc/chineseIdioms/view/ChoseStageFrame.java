@@ -1,12 +1,15 @@
 package com.superxc.chineseIdioms.view;
 
+import com.superxc.chineseIdioms.model.Stage;
 import com.superxc.chineseIdioms.model.User;
+import com.superxc.chineseIdioms.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.superxc.chineseIdioms.view.LoginFrame.BEACH_JPG;
 
@@ -57,7 +60,7 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
         int rows = getRows();
         centerPanel.setLayout(new GridLayout(rows, COLS));
         for (int i = 1; i <= MAX_STAGE; i++) {
-            JButton button = new JButton("<html><center>" + i + "</center>" + user.getStageStarString(i) + "</html>");
+            JButton button = new JButton();
             button.setActionCommand(i + "");
             button.addActionListener(choseStageListener());
             centerPanel.add(button);
@@ -88,13 +91,18 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
     }
 
     private void updateStageStatus() {
+        Map<Integer, Integer> userClearStages = Stage.getUserClearStages(user);
+        int maxPassStageId = user.getMaxPassStageId();
         btns.forEach(btn -> {
             btn.setEnabled(true);
             int index = Integer.parseInt(btn.getActionCommand());
-            btn.setText("<html><center>" + index + "</center>" + user.getStageStarString(index) + "</html>");
-//            if (Integer.parseInt(btn.getActionCommand()) > user.getProcess() + 1) {
-//                btn.setEnabled(false);
-//            }
+            Integer integerStarCount = userClearStages.get(index);
+            int starCount = integerStarCount == null ? 0 : integerStarCount;
+
+            btn.setText("<html><center>" + index + "</center>" + Util.convertStarCountToString(starCount) + "</html>");
+            if (index > maxPassStageId + 1) {
+                btn.setEnabled(false);
+            }
         });
     }
 }

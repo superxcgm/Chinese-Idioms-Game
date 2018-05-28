@@ -13,11 +13,15 @@ import java.util.Objects;
 
 public class User {
     private static final String tableName = "user";
-    private static final String STAR_ICON = "✪";
 
+    // TODO: 这里不清真，id应该是final类型的
+    private int id;
     private final String username;
     private final String password;
 
+    public int getId() {
+        return id;
+    }
 
     /**
      * username must only contain upper/lowerCase letter, digits, '-' or '_'
@@ -25,35 +29,19 @@ public class User {
      * @param password
      */
     public User(String username, String password) {
+        id = 0;
         this.username = username;
         this.password = password;
+    }
+
+    public User(int id, String username, String password) {
+        this(username, password);
+        this.id = id;
     }
 
     public User(User otherUser) {
         this.username = otherUser.username;
         this.password = otherUser.password;
-    }
-
-    public String getStageStarString(int stage) {
-        switch (getStageStarCount(stage)) {
-            case 0:
-                return "";
-            case 1:
-                return STAR_ICON;
-            case 2:
-                return STAR_ICON + STAR_ICON;
-            case 3:
-                return STAR_ICON + STAR_ICON + STAR_ICON;
-        }
-        return null;
-    }
-
-    public void setStageStar(int stage, int starCount) {
-
-    }
-
-    public int getStageStarCount(int stage) {
-        return 0;
     }
 
     public String getUsername() {
@@ -136,7 +124,7 @@ public class User {
         try {
             Statement statement = connection.createStatement();
             // TODO: 这里需要预防SQL注入攻击
-            String sql = String.format("SELECT username, password FROM %s WHERE username='%s' AND password='%s'",
+            String sql = String.format("SELECT id, username, password FROM %s WHERE username='%s' AND password='%s'",
                     tableName, incompleteUser.getUsername(), incompleteUser.getPassword());
 
             ResultSet resultSet = statement.executeQuery(sql);
@@ -198,14 +186,36 @@ public class User {
     }
 
     private static User resultGet(ResultSet resultSet) throws SQLException {
-        String username = resultSet.getString("username");
-        String password = resultSet.getString("password");
 
-        return new User(username, password);
+        return new User(
+                resultSet.getInt("id"),
+                resultSet.getString("username"),
+                resultSet.getString("password")
+        );
     }
 
 
     public static String encryptPassword(String password) {
         return Util.MD5(password);
+    }
+
+    public int getMaxPassStageId() {
+        Connection connect = DB.getConnect();
+        int maxPassStageId = 0;
+
+        try {
+            Statement statement = connect.createStatement();
+            String sql = String.format("SELECT MAX(stageId) AS maxStageId FROM clearStage WHERE userId=%d", getId());
+
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                maxPassStageId = resultSet.getInt("maxStageId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        DB.close(connect);
+        return maxPassStageId;
     }
 }

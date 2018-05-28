@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Util {
+    private static final String STAR_ICON = "✪";
     /**
      * MD5 encryption with salt
      * @param plainText sources plain text
@@ -56,5 +57,18 @@ public class Util {
             e.printStackTrace();
             return null;
         }
+    }
+    public static String convertStarCountToString(int count) {
+        switch (count) {
+            case 0:
+                return "";
+            case 1:
+                return STAR_ICON;
+            case 2:
+                return STAR_ICON + STAR_ICON;
+            case 3:
+                return STAR_ICON + STAR_ICON + STAR_ICON;
+        }
+        return null;
     }
 }
