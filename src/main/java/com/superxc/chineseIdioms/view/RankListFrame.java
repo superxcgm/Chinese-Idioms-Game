@@ -31,7 +31,7 @@ public class RankListFrame extends BackgroundImageJFrame {
     }
 
     public void showFrame() {
-        ranklist = User.getTopNOrderByProcessDesc(10);
+        ranklist = User.getTopNOrderByTotalStartDesc(10);
 
         refreshRankList(ranklist);
 
@@ -61,7 +61,7 @@ public class RankListFrame extends BackgroundImageJFrame {
                 user = ranklist.get(i);
             }
 
-//            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getTotalStars()));
+            stringBuilder.append(String.format("<tr><td>%d</td><td>%s</td><td>%d</td></tr>", i + 1, user.getUsername(), user.getTotalStar()));
         }
         stringBuilder.append("</tbody>\n" +
                 "</table>\n" +

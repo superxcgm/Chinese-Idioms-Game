@@ -18,9 +18,14 @@ public class User {
     private int id;
     private final String username;
     private final String password;
+    private int totalStar;
 
     public int getId() {
         return id;
+    }
+
+    public int getTotalStar() {
+        return totalStar;
     }
 
     /**
@@ -32,6 +37,12 @@ public class User {
         id = 0;
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, int totalStar) {
+        this.username = username;
+        this.totalStar = totalStar;
+        password = null;
     }
 
     public User(int id, String username, String password) {
@@ -170,13 +181,16 @@ public class User {
         Connection connection = DB.getConnect();
         try {
             Statement statement = connection.createStatement();
-            String sql = String.format("SELECT username, password, process, star, totalStars FROM %s ORDER BY totalStars DESC LIMIT %d",
+            String sql = String.format("SELECT username, SUM(starCount) AS totalStarCount FROM %s AS a JOIN clearStage AS b ON a.id=b.userID GROUP BY a.id ORDER BY totalStarCount DESC LIMIT 10",
                     tableName, n);
 
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                userList.add(resultGet(resultSet));
+                userList.add(new User(
+                        resultSet.getString("username"),
+                        resultSet.getInt("totalStarCount")
+                ));
             }
 
         } catch (SQLException e) {
