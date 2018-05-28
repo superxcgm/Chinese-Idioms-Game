@@ -1,7 +1,6 @@
 package com.superxc.chineseIdioms.model;
 
 import com.superxc.chineseIdioms.util.DB;
-import com.superxc.chineseIdioms.util.Util;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

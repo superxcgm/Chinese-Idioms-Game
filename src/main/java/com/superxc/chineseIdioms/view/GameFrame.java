@@ -61,6 +61,7 @@ public class GameFrame extends BackgroundImageJFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                timer.cancel();
                 choseStageFrame.showFrame();
             }
         });
@@ -68,8 +69,8 @@ public class GameFrame extends BackgroundImageJFrame {
         setTitle("第" + stage + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        timeTotal = 300 - (stage - 1) / 5 * 10;
-//        timeTotal = 30;
+//        timeTotal = 300 - (stage - 1) / 5 * 10;
+        timeTotal = 10;
 
         initIdioms(stage);
 
