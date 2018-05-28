@@ -1,8 +1,10 @@
 package com.superxc.chineseIdioms.view;
 
 import com.superxc.chineseIdioms.model.Idiom;
+import com.superxc.chineseIdioms.model.Stage;
 import com.superxc.chineseIdioms.model.User;
 import com.superxc.chineseIdioms.util.AppConfigure;
+import com.superxc.chineseIdioms.util.Util;
 
 import javax.swing.*;
 import java.applet.AudioClip;
@@ -18,7 +20,6 @@ import static com.superxc.chineseIdioms.view.LoginFrame.BEACH_JPG;
 public class GameFrame extends BackgroundImageJFrame {
 
     private static final String PROMPT_OFF = "提示：关";
-    private static final String STAR_ICON = "✪";
     private static final int COLS = 7;
     private JLabel labelTimer;
 
@@ -36,7 +37,7 @@ public class GameFrame extends BackgroundImageJFrame {
 
     private User user;
 
-    private int stage;
+    private Stage stage;
 
     private int timeUsed = 0;
     private int timeTotal;
@@ -48,13 +49,13 @@ public class GameFrame extends BackgroundImageJFrame {
     private AudioClip audioClipFailedEliminate;
     private AudioClip audioClipFailed;
 
-    public GameFrame(ChoseStageFrame choseStageFrame, User user, int stage) {
+    public GameFrame(ChoseStageFrame choseStageFrame, User user, int stageId) {
 
         loadResource();
 
         this.choseStageFrame = choseStageFrame;
         this.user = user;
-        this.stage = stage;
+        stage = Stage.getStage(stageId);
 
         SHUFFLE_ON = AppConfigure.getBooleanProperty("GAME_SHUFFLE");
 
@@ -66,13 +67,13 @@ public class GameFrame extends BackgroundImageJFrame {
             }
         });
 
-        setTitle("第" + stage + "关");
+        setTitle("第" + stage.getId() + "关");
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        timeTotal = 300 - (stage - 1) / 5 * 10;
+        timeTotal = stage.getTotalTime();
 //        timeTotal = 10;
 
-        initIdioms(stage);
+        initIdioms();
 
         JPanel northPanel = new TransparentJPanel();
         JPanel centerPanel = new TransparentJPanel();
@@ -124,7 +125,7 @@ public class GameFrame extends BackgroundImageJFrame {
             Object stringArray[] = {"再试一次", "返回主页"};
             int option = JOptionPane.showOptionDialog(this, "闯关失败！没有在限定的时间内完成。", "失败！", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, stringArray, stringArray[1]);
             if (option == JOptionPane.YES_OPTION) {
-                JFrame frame = new GameFrame(choseStageFrame, user, stage);
+                JFrame frame = new GameFrame(choseStageFrame, user, stage.getId());
                 frame.setVisible(true);
                 setVisible(false);
             } else {
@@ -144,10 +145,10 @@ public class GameFrame extends BackgroundImageJFrame {
         }, 0, 1000);
     }
 
-    private void initIdioms(int stage) {
+    private void initIdioms() {
         idioms = new HashMap<>();
         int index = 0;
-        for (Idiom idiom : Idiom.getIdioms(stage)) {
+        for (Idiom idiom : stage.getIdioms()) {
             idioms.put(index++, idiom);
         }
     }
@@ -242,10 +243,6 @@ public class GameFrame extends BackgroundImageJFrame {
                 audioClipSuccessEliminate.play();
 
                 if (idioms.size() == 0) {
-//                    if (user.getProcess() < stage) {
-//                        user.setProcess(stage);
-//                        user.save();
-//                    }
                     timer.cancel();
 
                     audioClipSuccess.play();
@@ -253,29 +250,25 @@ public class GameFrame extends BackgroundImageJFrame {
 
                     int timeLeft = timeTotal - timeUsed;
                     int starCount = 0;
-                    String starString = "";
                     if (timeLeft > 60) {
                         starCount = 3;
-                        starString = STAR_ICON + STAR_ICON + STAR_ICON;
                     } else if (timeLeft > 30) {
                         starCount = 2;
-                        starString = STAR_ICON + STAR_ICON;
                     } else {
                         starCount = 1;
-                        starString = STAR_ICON;
                     }
-
-//                    if (user.getStageStarCount(stage) < starCount) {
-//                        user.setStageStar(stage, starCount);
-//                        user.save();
-//                    }
+                    if (user.getMaxPassStageId() < stage.getId()) {
+                        Stage.addClearStage(user, stage.getId(), starCount);
+                    } else if (user.getStageStarCount(stage.getId()) < starCount) {
+                        Stage.updateClearStage(user, stage.getId(), starCount);
+                    }
                     Object stringArray[] = {"返回主页", "下一关"};
-                    int option = JOptionPane.showOptionDialog(this, starString + " 闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
+                    int option = JOptionPane.showOptionDialog(this, Util.convertStarCountToString(starCount) + " 闯关成功！用时：" + timeUsed + "秒。", "成功！", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[1]);
                     if (option == JOptionPane.YES_OPTION) {
                         choseStageFrame.showFrame();
                         setVisible(false);
                     } else {
-                        JFrame frame = new GameFrame(choseStageFrame, user, stage + 1);
+                        JFrame frame = new GameFrame(choseStageFrame, user, stage.getId() + 1);
                         frame.setVisible(true);
                         setVisible(false);
                     }

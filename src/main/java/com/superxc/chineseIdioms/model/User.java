@@ -232,4 +232,21 @@ public class User {
         DB.close(connect);
         return maxPassStageId;
     }
+
+    public int getStageStarCount(int stageId) {
+        Connection connect = DB.getConnect();
+        int starCount = 0;
+        try {
+            Statement statement = connect.createStatement();
+            String sql = String.format("SELECT starCount FROM clearStage WHERE userId=%d AND stageId=%d", getId(), stageId);
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                starCount = resultSet.getInt("starCount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DB.close(connect);
+        return starCount;
+    }
 }
