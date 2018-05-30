@@ -1,6 +1,7 @@
 package com.superxc.chineseIdioms.model;
 
 import com.superxc.chineseIdioms.util.Util;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class LocaleClearStage {
 
         if (file.exists()) {
             String content = Util.fileReadToString(fileName);
+            content = new String(Base64.decodeBase64(content));
             String[] rows = content.split("\n");
 
             for (String row : rows) {
@@ -43,7 +45,7 @@ public class LocaleClearStage {
         for (Integer key : map.keySet()) {
             sb.append(key + DELIMITER + map.get(key) + "\n");
         }
-        Util.WriteStringToFile(fileName, sb.toString());
+        Util.WriteStringToFile(fileName, Base64.encodeBase64String(sb.toString().getBytes()));
     }
 
     public static void update(int stageId, int starCount) {
