@@ -154,27 +154,6 @@ public class User {
         return AnonymousUser.getAnonymousUser();
     }
 
-    public static List<User> getTopNOrderByProcessDesc(int n) {
-        List<User> userList = new ArrayList<>();
-
-        Connection connection = DB.getConnect();
-        try {
-            Statement statement = connection.createStatement();
-            String sql = String.format("SELECT username, password, process, star, totalStars FROM %s ORDER BY process DESC LIMIT %d",
-                    tableName, n);
-
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-                userList.add(resultGet(resultSet));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return userList;
-    }
-
     public static List<User> getTopNOrderByTotalStartDesc(int n) {
         List<User> userList = new ArrayList<>();
 

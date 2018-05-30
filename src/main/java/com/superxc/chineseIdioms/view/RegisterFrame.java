@@ -1,7 +1,6 @@
 package com.superxc.chineseIdioms.view;
 
 import com.superxc.chineseIdioms.model.User;
-import com.superxc.chineseIdioms.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,7 +90,7 @@ public class RegisterFrame extends BackgroundImageJFrame {
                     errorMsg = "两次输入的密码不一致!";
                     throwAnException();
                 }
-                user = new User(username, Util.MD5(password));
+                user = new User(username, User.encryptPassword(password));
                 if (user.exist()) {
                     errorMsg = "用户名已经存在！";
                     throwAnException();

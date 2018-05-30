@@ -85,7 +85,7 @@ public class LoginFrame extends BackgroundImageJFrame {
     }
 
     private ActionListener loginWithUsernameAndPassword() {
-        return e -> login(new User(getInputUsername(), Util.MD5(getInputPassword())));
+        return e -> login(new User(getInputUsername(), User.encryptPassword(getInputPassword())));
     }
 
     private void login(User incompleteUser) {
