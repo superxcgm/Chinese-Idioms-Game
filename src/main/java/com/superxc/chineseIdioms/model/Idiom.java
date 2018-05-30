@@ -1,5 +1,6 @@
 package com.superxc.chineseIdioms.model;
 
+import com.superxc.chineseIdioms.util.AppConfigure;
 import com.superxc.chineseIdioms.util.DB;
 import com.superxc.chineseIdioms.util.Util;
 
@@ -30,6 +31,9 @@ public class Idiom {
             Statement statement = connection.createStatement();
             String sql = String.format("SELECT `value`,`description` FROM %s WHERE `stageId`=%d",
                     tableName, givenStageId);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 idioms.add(new Idiom(givenStageId, resultSet.getString("value"), resultSet.getString("description")));
@@ -92,6 +96,9 @@ public class Idiom {
             }
             String sql = String.format("INSERT INTO %s(`stageId`, `value`, `description`) VALUES (%d, '%s', '%s')",
                     tableName, Integer.parseInt(elems[0]), elems[1], elems[2]);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             if (statement.executeUpdate(sql) > 0) {
                 continue;
             }

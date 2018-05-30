@@ -1,5 +1,6 @@
 package com.superxc.chineseIdioms.model;
 
+import com.superxc.chineseIdioms.util.AppConfigure;
 import com.superxc.chineseIdioms.util.DB;
 import com.superxc.chineseIdioms.util.Util;
 
@@ -95,6 +96,9 @@ public class User {
             Statement statement = connection.createStatement();
             String sql = String.format("INSERT INTO %s (username, password) VALUES ('%s', '%s')",
                     tableName, getUsername(), getPassword());
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
              success = statement.executeUpdate(sql) > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,6 +113,9 @@ public class User {
         try {
             Statement statement = connect.createStatement();
             String sql = String.format("SELECT * FROM %s WHERE username='%s'", tableName, getUsername());
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
@@ -137,7 +144,9 @@ public class User {
             // TODO: 这里需要预防SQL注入攻击
             String sql = String.format("SELECT id, username, password FROM %s WHERE username='%s' AND password='%s'",
                     tableName, incompleteUser.getUsername(), incompleteUser.getPassword());
-
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
@@ -162,7 +171,9 @@ public class User {
             Statement statement = connection.createStatement();
             String sql = String.format("SELECT username, SUM(starCount) AS totalStarCount FROM %s AS a JOIN clearStage AS b ON a.id=b.userID GROUP BY a.id ORDER BY totalStarCount DESC LIMIT 10",
                     tableName, n);
-
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -199,7 +210,9 @@ public class User {
         try {
             Statement statement = connect.createStatement();
             String sql = String.format("SELECT MAX(stageId) AS maxStageId FROM clearStage WHERE userId=%d", getId());
-
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 maxPassStageId = resultSet.getInt("maxStageId");
@@ -218,6 +231,9 @@ public class User {
         try {
             Statement statement = connect.createStatement();
             String sql = String.format("SELECT starCount FROM clearStage WHERE userId=%d AND stageId=%d", getId(), stageId);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 starCount = resultSet.getInt("starCount");

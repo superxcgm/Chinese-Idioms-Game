@@ -1,5 +1,6 @@
 package com.superxc.chineseIdioms.model;
 
+import com.superxc.chineseIdioms.util.AppConfigure;
 import com.superxc.chineseIdioms.util.DB;
 
 import java.sql.Connection;
@@ -46,7 +47,9 @@ public class Stage {
             int totalTime = 0;
             // get totalTime;
             String sql = String.format("SELECT totalTime FROM level AS a JOIN %s AS b ON a.id=b.levelID WHERE b.id=%d", tableName, stageId);
-//            System.out.println(sql);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 totalTime = resultSet.getInt("totalTime");
@@ -71,6 +74,9 @@ public class Stage {
         try {
             Statement statement = connect.createStatement();
             String sql = String.format("SELECT stageId, starCount FROM clearStage WHERE userId=%d", user.getId());
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 mapStageIdToStarCount.put(resultSet.getInt("stageId"),
@@ -90,7 +96,9 @@ public class Stage {
             Statement statement = connect.createStatement();
             String sql = String.format("INSERT INTO clearStage(userId, stageId, starCount) VALUES(%d, %d, %d)",
                     user.getId(), stageId, starCount);
-//            System.out.println(sql);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,7 +112,9 @@ public class Stage {
             Statement statement = connect.createStatement();
             String sql = String.format("UPDATE clearStage SET starCount=%d WHERE userId=%d AND stageId=%d",
                     starCount, user.getId(), stageId);
-//            System.out.println(sql);
+            if (AppConfigure.getBooleanProperty("SQL_SHOW")) {
+                System.out.println(sql);
+            }
             statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
