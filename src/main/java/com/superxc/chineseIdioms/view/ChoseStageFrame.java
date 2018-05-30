@@ -105,5 +105,6 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
                 btn.setEnabled(false);
             }
         });
+        pack();
     }
 }
