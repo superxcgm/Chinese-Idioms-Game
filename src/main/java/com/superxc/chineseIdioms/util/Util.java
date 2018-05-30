@@ -58,6 +58,15 @@ public class Util {
             return null;
         }
     }
+    public static void WriteStringToFile(String filePath, String str) {
+        try {
+            File file = new File(filePath);
+            PrintStream ps = new PrintStream(new FileOutputStream(file));
+            ps.println(str);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     public static String convertStarCountToString(int count) {
         switch (count) {
             case 0:

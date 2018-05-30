@@ -93,6 +93,7 @@ public class ChoseStageFrame extends BackgroundImageJFrame {
     private void updateStageStatus() {
         Map<Integer, Integer> userClearStages = Stage.getUserClearStages(user);
         int maxPassStageId = user.getMaxPassStageId();
+//        System.out.println("maxPassStageId = " + maxPassStageId);
         btns.forEach(btn -> {
             btn.setEnabled(true);
             int index = Integer.parseInt(btn.getActionCommand());

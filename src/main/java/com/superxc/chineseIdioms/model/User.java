@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class User {
@@ -204,6 +205,18 @@ public class User {
     }
 
     public int getMaxPassStageId() {
+        if (this == User.createAnonymousUser()) {
+
+            Map<Integer, Integer> map = LocaleClearStage.get();
+            if (map.size() == 0) {
+                return 0;
+            }
+            return map.keySet()
+                    .stream()
+                    .mapToInt(i -> i)
+                    .summaryStatistics()
+                    .getMax();
+        }
         Connection connect = DB.getConnect();
         int maxPassStageId = 0;
 

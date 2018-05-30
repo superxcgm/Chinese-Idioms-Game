@@ -2,6 +2,7 @@ package com.superxc.chineseIdioms.model;
 
 import com.superxc.chineseIdioms.util.AppConfigure;
 import com.superxc.chineseIdioms.util.DB;
+import com.superxc.chineseIdioms.util.Util;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -67,6 +68,9 @@ public class Stage {
     }
 
     public static Map<Integer, Integer> getUserClearStages(User user) {
+        if (user == User.createAnonymousUser()) {
+            return LocaleClearStage.get();
+        }
         // map: stageId -> starCount
         Map<Integer, Integer> mapStageIdToStarCount = new HashMap<>();
 
@@ -91,6 +95,10 @@ public class Stage {
     }
 
     public static void addClearStage(User user, int stageId, int starCount) {
+        if (user == User.createAnonymousUser()) {
+            LocaleClearStage.add(stageId, starCount);
+            return;
+        }
         Connection connect = DB.getConnect();
         try {
             Statement statement = connect.createStatement();
@@ -107,6 +115,10 @@ public class Stage {
     }
 
     public static void updateClearStage(User user, int stageId, int starCount) {
+        if (user == User.createAnonymousUser()) {
+            LocaleClearStage.update(stageId, starCount);
+            return;
+        }
         Connection connect = DB.getConnect();
         try {
             Statement statement = connect.createStatement();
